@@ -1,0 +1,10 @@
+PHP Notice:  Undefined offset: 1 in /home/ubuntu/thebot/conversation.php on line 308
+./start: line 2: 28057 Terminated              php /home/ubuntu/thebot/index.php
+./start: line 2: 14659 Terminated              php /home/ubuntu/thebot/index.php
+./start: line 2: 15977 Terminated              php /home/ubuntu/thebot/index.php
+./start: line 2: 24368 Terminated              php /home/ubuntu/thepet/index.php
+./start: line 2: 32053 Terminated              php /home/ubuntu/thepet/index.php
+./start: line 2:  8252 Terminated              php /home/ubuntu/thepet/index.php
+./start: line 2:  8412 Terminated              php /home/ubuntu/thepet/index.php
+./start: line 2:  3217 Terminated              php /home/ubuntu/thepet/index.php
+./start: line 2: 17414 Terminated              php /home/ubuntu/thepet/index.php

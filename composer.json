@@ -1,0 +1,8 @@
+{
+    "require": {
+        "mpociot/botman": "^1.2",
+        "mpociot/slack-client": "^0.2.6",
+        "wrapi/slack": "^0.1.4",
+        "botman/botman": "^2.4"
+    }
+}
