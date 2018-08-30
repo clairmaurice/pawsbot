@@ -185,98 +185,92 @@ class PawsfileConversation extends Conversation
 
     public function askRoutine()
     {
-        $question = Question::create('I come to the office on (select all that apply):')
+        $question = Question::create('I come to the office on (type free text with days of weeks or use existed buttons for other options):')
             ->fallback('Unable to detect an office day')
             ->callbackId('pet_days')
             ->addButtons([
-                Button::create('Monday')->value('monday'),
-                Button::create('Tuesday')->value('tuesday'),
-                Button::create('Wednesday')->value('wednesday'),
-                Button::create('Thursday')->value('thursday'),
-                Button::create('Friday')->value('friday'),
+                Button::create('Every day')->value('every day'),
+                Button::create('Not sure')->value('skip'),
             ]);
 
         $this->ask($question, function(Answer $answer) {
             $day = $answer->getText();
 
             switch($day) {
-                case 'monday':
+                case 'every day':
                     $this->monday = true;
-                    $this->nodays = false;
-                    $this->askMore();
-                    break;
-
-                case 'tuesday':
                     $this->tuesday = true;
-                    $this->nodays = false;
-                    $this->askMore();
-                    break;
-
-                case 'wednesday':
                     $this->wednesday = true;
-                    $this->nodays = false;
-                    $this->askMore();
-                    break;
-
-                case 'thursday':
                     $this->thursday = true;
-                    $this->nodays = false;
-                    $this->askMore();
-                    break;
-
-                case 'friday':
                     $this->friday = true;
                     $this->nodays = false;
-                    $this->askMore();
-                    break;
-
-                default:
-                    $this->say('Can\'t understand, please, try again');
-                    $this->askRoutine();
-                    break;
-            }
-            
-        });
-    }
-
-
-    public function askMore() {
-
-        $question = Question::create('Do you want to add more days?')
-            ->fallback('Unable to detect if more or not')
-            ->callbackId('pet_days_more')
-            ->addButtons([
-                Button::create('Yep, one more day, please')->value('yes'),
-                Button::create('No, only this days')->value('save'),
-                Button::create('No set any days')->value('delete'),
-            ]);
-
-        $this->ask($question, function(Answer $answer) {
-            $more = $answer->getText();
-
-            switch($more) {
-                case 'yes':
-                    $this->askRoutine();
-                    break;
-
-                case 'save':
                     $this->askEat();
                     break;
 
-                case 'delete':
+                case 'skip':
                     $this->monday = false;
                     $this->tuesday = false;
                     $this->wednesday = false;
                     $this->thursday = false;
                     $this->friday = false;
+                    $this->nodays = true;
                     $this->askEat();
                     break;
 
+        
                 default:
-                    $this->askRoutine();
-                    break;   
+                    
+                    $this->monday = false;
+                    $this->tuesday = false;
+                    $this->wednesday = false;
+                    $this->thursday = false;
+                    $this->friday = false;
+                    $this->nodays = false;
+                    
+
+                    if (preg_match('@monday@', strtolower($day))) {
+                        $this->monday = true;
+                    }
+
+                    if (preg_match('@mon@', strtolower($day))) {
+                        $this->monday = true;
+                    }
+
+                    if (preg_match('@tuesday@', strtolower($day))) {
+                        $this->tuesday = true;
+                    }
+
+                    if (preg_match('@tu@', strtolower($day))) {
+                        $this->tuesday = true;
+                    }
+
+                    if (preg_match('@wednesday@', strtolower($day))) {
+                        $this->wednesday = true;
+                    }
+
+                    if (preg_match('@wed@', strtolower($day))) {
+                        $this->wednesday = true;
+                    }
+
+                    if (preg_match('@thursday@', strtolower($day))) {
+                        $this->thursday = true;
+                    }
+
+                    if (preg_match('@thu@', strtolower($day))) {
+                        $this->thursday = true;
+                    }
+
+                    if (preg_match('@friday@', strtolower($day))) {
+                        $this->friday = true;
+                    }
+
+                    if (preg_match('@fri@', strtolower($day))) {
+                        $this->friday = true;
+                    }
+
+                    $this->askEat();
+                    break;
             }
-                
         });
     }
 
@@ -289,7 +283,6 @@ class PawsfileConversation extends Conversation
             $this->foods = $answer->getText();
             $this->askNonFood();
         });
-
     }
 
 
@@ -494,8 +487,6 @@ class PawsfileConversation extends Conversation
         $db->execute($query);
 
         $query = 'INSERT INTO eatplay (`pet_id`, `foods`, `non_foods`, `games`, `toys`) VALUES ("'.$id.'", "'.$this->foods.'", "'.$this->non_foods.'", "'.$this->games.'", "'.$this->toys.'")';
-
-        var_dump($query);
 
         $db->execute($query);
 
