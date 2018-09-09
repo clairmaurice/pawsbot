@@ -54,6 +54,23 @@ $botman->hears('Help', function($bot) {
 	$bot->reply('Hello, I know this commands: '.PHP_EOL.PHP_EOL.'    *Hello* - this command will help to set up an info about me, to set walking time and my location.'.PHP_EOL.'    *clear* - this command will reset all the info.'.PHP_EOL.PHP_EOL.'Enjoy!');
 });
 
+$botman->hears('@{name}', function($bot, $name) {
+    $nnm = explode(' ', $name);
+    
+    if (is_array($nnm)) {
+        $name = $nnm[0];
+    } 
+
+    $db = new Database();
+    if ($db->checkPetName($name)) {
+        $result = 'we have the pet with this nickname, so we can to start any conversations, based on this name';
+    } else {
+        $result = 'we have no any pets with this nickname';
+    }
+
+    $bot->reply($result);
+});
+
 $botman->fallback(function(BotMan $bot) {
 	if ($GLOBALS['in_conversation'] == false) {
 		$user_id = $bot->getUserId();

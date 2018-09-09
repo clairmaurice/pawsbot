@@ -98,7 +98,22 @@ Class Database {
 		} else {
 			echo 'Wrong database connection';
 		}
+	}
 
+	public function checkPetName($name) {
+		$query_get_name = "select * from pawsfiles where nickname = '".$name."'";
+		$res = $this->execute($query_get_name);
+		
+		if ($res) {
+			$result = $res->fetch_assoc();
+			if ($result['nickname'] == $name) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 
